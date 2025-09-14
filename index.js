@@ -12,7 +12,7 @@ const foo = async () => {
 
       for (let j = 1; j <= 5; j++) {
          const filePath = path.join(folderPath, `file${j}.txt`);
-         await fs.writeFile(filePath, `Це вміст файлу ${j} у папці folder${i}`);
+         await fs.writeFile(filePath, ` ${j} ${i}`);
       }
    }
 
