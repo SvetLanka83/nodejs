@@ -1,29 +1,35 @@
 {
-  "name": "node",
+  "name": "nodejs",
   "version": "1.0.0",
-  "main": "src/main.ts",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "rimraf dist && tsc-watch --onSuccess \"npm run watch:server \"",
-    "watch:server": "ts-node src/main.ts --watch"
+    "start": "rimraf dist && tsc-watch --onSuccess \"npm run watch:server\"",
+    "watch:server": "tsx src/main.ts --watch"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "-": "^0.0.1",
-    "dotenv": "^17.2.2",
-    "express": "^5.1.0",
-    "g": "^2.0.1",
-    "mongoose": "^8.18.2"
-
+    "express": "^4.21.2",
+    "mongoose": "^8.12.1",
+    "dotenv": "^16.4.7",
+    "joi": "^17.13.3"
   },
   "devDependencies": {
-    "@types/express": "^5.0.3",
+    "typescript": "^5.8.2",
+    "@types/express": "^5.0.0",
     "@types/mongoose": "^5.11.97",
     "rimraf": "^6.0.1",
-    "ts-node": "^10.9.2",
-    "tsc-watch": "^7.1.1",
-    "typescript": "^5.9.2"
-  }
+    "tsc-watch": "^6.2.1",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "@typescript-eslint/parser": "^8.26.1",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@eslint/js": "^9.22.0",
+    "tsx": "^4.19.3"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
