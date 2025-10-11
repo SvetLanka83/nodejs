@@ -18,4 +18,5 @@ class UserRepository {
         return User.findByIdAndDelete(userId);
     }
 }
+
 export const userRepository = new UserRepository();

@@ -1,5 +1,5 @@
-/* eslint-disable no-console*/
-/* eslint-disable @typescript-eslint/no-unused-vars*/
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import express, { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 
@@ -10,6 +10,7 @@ import { apiRouter } from "./routers/api.router";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 app.use("/", apiRouter);
 
 app.use(
@@ -39,7 +40,8 @@ const dbConnection = async () => {
         }
     }
 };
-const start = async (): Promise<void> => {
+
+const start = async () => {
     try {
         await dbConnection();
         app.listen(config.PORT, () => {
