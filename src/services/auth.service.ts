@@ -15,7 +15,7 @@ class AuthService {
     ): Promise<{ user: IUser; tokens: ITokenPair }> {
         await userService.isEmailUnique(user.email);
         const password = await passwordService.hashPassword(user.password);
-        const newUser = await userService.create({ ...user, password });
+        const newUser = await userRepository.create({ ...user, password });
         const tokens = tokenService.generateTokens({
             userId: newUser._id,
             role: newUser.role,
@@ -23,20 +23,31 @@ class AuthService {
         await tokenRepository.create({ ...tokens, _userId: newUser._id });
         return { user: newUser, tokens };
     }
+
     public async signIn(
         dto: IAuth,
     ): Promise<{ user: IUser; tokens: ITokenPair }> {
         const user = await userRepository.getByEmail(dto.email);
+
+        if (!user) {
+            throw new ApiError(
+                "Email or password invalid",
+                StatusCodesEnum.UNAUTHORIZED,
+            );
+        }
+
         const isValidPassword = await passwordService.comparePassword(
             dto.password,
             user.password,
         );
+
         if (!isValidPassword) {
             throw new ApiError(
                 "Invalid email or password",
                 StatusCodesEnum.UNAUTHORIZED,
             );
         }
+
         const tokens = tokenService.generateTokens({
             userId: user._id,
             role: user.role,
@@ -45,4 +56,5 @@ class AuthService {
         return { user, tokens };
     }
 }
+
 export const authService = new AuthService();

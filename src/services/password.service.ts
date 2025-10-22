@@ -4,6 +4,7 @@ class PasswordService {
     public hashPassword(password: string): Promise<string> {
         return bcrypt.hash(password, 10);
     }
+
     public comparePassword(
         password: string,
         hashedPassword: string,
@@ -11,4 +12,5 @@ class PasswordService {
         return bcrypt.compare(password, hashedPassword);
     }
 }
+
 export const passwordService = new PasswordService();

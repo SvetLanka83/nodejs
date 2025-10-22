@@ -7,9 +7,12 @@ interface IToken extends IBase {
     refreshToken: string;
     _userId: string;
 }
+
 interface ITokenPayload {
     userId: string;
     role: RoleEnum;
 }
+
 type ITokenPair = Pick<IToken, "accessToken" | "refreshToken">;
-export { IToken, ITokenPair, ITokenPayload };
+type IRefresh = Pick<IToken, "refreshToken">;
+export { IRefresh, IToken, ITokenPair, ITokenPayload };

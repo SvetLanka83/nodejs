@@ -3,11 +3,7 @@ import jwt from "jsonwebtoken";
 import { config } from "../configs/config";
 import { StatusCodesEnum } from "../enums/status-codes-enum";
 import { ApiError } from "../errors/api.error";
-import {
-    IToken,
-    ITokenPair,
-    ITokenPayload,
-} from "../interfaces/token.interface";
+import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 import { tokenRepository } from "../repositories/token.repository";
 
 class TokenService {
@@ -18,11 +14,13 @@ class TokenService {
         const refreshToken = jwt.sign(payload, config.JWT_REFRESH_SECRET, {
             expiresIn: config.JWT_REFRESH_LIFETIME,
         });
+
         return {
             accessToken,
             refreshToken,
         };
     }
+
     public verifyToken(
         token: string,
         type: "access" | "refresh",
@@ -44,13 +42,22 @@ class TokenService {
                     );
             }
             return jwt.verify(token, secret) as ITokenPayload;
+
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
             throw new ApiError("Invalid token", StatusCodesEnum.UNAUTHORIZED);
         }
     }
-    public isExists(accessToken: string): Promise<IToken> {
-        return tokenRepository.findByParams({ accessToken });
+
+    public async isTokenExists(
+        token: string,
+        type: "accessToken" | "refreshToken",
+    ): Promise<boolean> {
+        const iTokenPromise = await tokenRepository.findByParams({
+            [type]: token,
+        });
+        return !!iTokenPromise;
     }
 }
+
 export const tokenService = new TokenService();

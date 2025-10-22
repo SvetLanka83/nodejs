@@ -12,9 +12,12 @@ interface IUser extends IBase {
     surname: string;
     age: number;
 }
+
 type IUserCreateDTO = Pick<
     IUser,
     "email" | "password" | "name" | "surname" | "age"
 >;
+
 type IUserUpdateDTO = Pick<IUser, "name" | "surname" | "age">;
+
 export type { IUser, IUserCreateDTO, IUserUpdateDTO };
