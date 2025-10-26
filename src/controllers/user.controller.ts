@@ -48,10 +48,11 @@ class UserController {
     }
     public async blockUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const { id } = req.params;
-            const { userId } = req.res.locals.tokenPayload as ITokenPayload;
+            const { id: userId } = req.params;
+            const { userId: myId } = req.res.locals
+                .tokenPayload as ITokenPayload;
 
-            if (id == userId) {
+            if (userId == myId) {
                 throw new ApiError("Not permitted", StatusCodesEnum.FORBIDDEN);
             }
             const data = await userService.bllockUser(userId);
@@ -62,10 +63,11 @@ class UserController {
     }
     public async unBlockUser(req: Request, res: Response, next: NextFunction) {
         try {
-            const { id } = req.params;
-            const { userId } = req.res.locals.tokenPayload as ITokenPayload;
+            const { id: userId } = req.params;
+            const { userId: myId } = req.res.locals
+                .tokenPayload as ITokenPayload;
 
-            if (id == userId) {
+            if (userId == myId) {
                 throw new ApiError("Not permitted", StatusCodesEnum.FORBIDDEN);
             }
             const data = await userService.unBllockUser(userId);
