@@ -1,3 +1,4 @@
+import { templatesConstants } from "../constants/templates.constants";
 import { StatusCodesEnum } from "../enums/status-codes-enum";
 import { ApiError } from "../errors/api.error";
 import { IAuth } from "../interfaces/auth.interface";
@@ -22,7 +23,12 @@ class AuthService {
             role: newUser.role,
         });
         await tokenRepository.create({ ...tokens, _userId: newUser._id });
-        await emailService.sendEmail();
+        await emailService.sendEmail(
+            newUser.email,
+            "Welcome",
+            templatesConstants.WELCOME,
+            { name: newUser.name },
+        );
         return { user: newUser, tokens };
     }
 

@@ -1,3 +1,7 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+
+import handlebars from "handlebars";
 import nodemailer, { Transporter } from "nodemailer";
 
 import { config } from "../configs/config";
@@ -13,11 +17,33 @@ class EmailService {
             },
         });
     }
-    public async sendEmail(): Promise<void> {
+    private async renderTemplate(
+        templateName: string,
+        context: Record<string, any>,
+    ): Promise<string> {
+        const layoutSource = await fs.readFile(
+            path.join(process.cwd(), "src", "templates", "base.hbs"),
+            "utf8",
+        );
+        const layoutTemplate = handlebars.compile(layoutSource);
+        const templateSource = await fs.readFile(
+            path.join(process.cwd(), "src", "templates", `${templateName}.hbs`),
+            "utf8",
+        );
+        const childTemplate = handlebars.compile(templateSource);
+        const childHtml = childTemplate(context);
+        return layoutTemplate({ body: childHtml });
+    }
+    public async sendEmail(
+        to: string,
+        subject: string,
+        templateName: string,
+        context: Record<string, any>,
+    ): Promise<void> {
         await this.transporter.sendMail({
-            to: "krasnopolsky.anatoliy@gmail.com",
-            subject: "Hello",
-            text: "Hello from nodemaler",
+            to,
+            subject,
+            html: await this.renderTemplate(templateName, context),
         });
     }
 }
