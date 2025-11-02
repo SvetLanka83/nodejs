@@ -27,5 +27,5 @@ router.get(
     authMiddleware.checkAccessToken,
     authController.me,
 );
-
+router.patch("/activate/:token", authController.activate);
 export const authRouter = router;
