@@ -4,6 +4,7 @@ import { authController } from "../controllers/auth.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { AuthValidator } from "../validators/auth.validator";
+import { RecoveryValidator } from "../validators/recovery.validator";
 import { UserValidator } from "../validators/user.validator";
 
 const router = Router();
@@ -28,4 +29,9 @@ router.get(
     authController.me,
 );
 router.patch("/activate/:token", authController.activate);
+router.post(
+    "/recovery",
+    commonMiddleware.validateBody(RecoveryValidator.emailSchema),
+    authController.recoveryRequest,
+);
 export const authRouter = router;
