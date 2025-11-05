@@ -27,13 +27,9 @@ class AuthService {
         });
         await tokenRepository.create({ ...tokens, _userId: newUser._id });
         const token = tokenService.generateActionToken(
-            {
-                userId: newUser._id,
-                role: newUser.role,
-            },
+            { userId: newUser._id, role: newUser.role },
             ActionTokenTypeEnum.ACTIVATE,
         );
-
         await emailService.sendEmail(
             newUser.email,
             emailConstants[EmailEnum.ACTIVATE],
@@ -68,6 +64,7 @@ class AuthService {
                 StatusCodesEnum.FORBIDDEN,
             );
         }
+
         if (!isValidPassword) {
             throw new ApiError(
                 "Invalid email or password",
@@ -82,6 +79,7 @@ class AuthService {
         await tokenRepository.create({ ...tokens, _userId: user._id });
         return { user, tokens };
     }
+
     public async activate(token: string): Promise<IUser> {
         const { userId } = tokenService.verifyToken(
             token,
@@ -89,6 +87,7 @@ class AuthService {
         );
         return await userService.updateById(userId, { isActive: true });
     }
+
     public async recoveryPasswordRequest(user: IUser): Promise<void> {
         const token = tokenService.generateActionToken(
             {
@@ -103,6 +102,19 @@ class AuthService {
             emailConstants[EmailEnum.RECOVERY],
             { url },
         );
+    }
+    public async recoveryPassword(
+        token: string,
+        password: string,
+    ): Promise<IUser> {
+        const { userId } = tokenService.verifyToken(
+            token,
+            ActionTokenTypeEnum.RECOVERY,
+        );
+        const hashedPassword = await passwordService.hashPassword(password);
+        return await userService.updateById(userId, {
+            password: hashedPassword,
+        });
     }
 }
 

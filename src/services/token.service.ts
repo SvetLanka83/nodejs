@@ -77,7 +77,6 @@ class TokenService {
         }
         return jwt.sign(payload, secret, { expiresIn });
     }
-
     public async isTokenExists(
         token: string,
         type: TokenTypeEnum,

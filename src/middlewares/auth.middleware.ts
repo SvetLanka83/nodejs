@@ -99,7 +99,8 @@ class AuthMiddleware {
             next(e);
         }
     }
-    public isAdmin(req: Request, res: Response, next: NextFunction): void {
+
+    public isAdmin(req: Request, res: Response, next: NextFunction) {
         try {
             const { role } = req.res.locals.tokenPayload as ITokenPayload;
 

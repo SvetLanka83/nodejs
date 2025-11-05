@@ -4,13 +4,15 @@ type IEmailData = {
     subject: string;
     template: string;
 };
+
 type IEmailConstants<T extends Record<string, string>> = {
     [K in keyof T]: IEmailData;
 };
+
 export const emailConstants: IEmailConstants<typeof EmailEnum> = {
     [EmailEnum.WELCOME]: {
-        subject: "Wellcome",
-        template: "wellcome",
+        subject: "Welcome",
+        template: "welcome",
     },
     [EmailEnum.ACTIVATE]: {
         subject: "Activate Account",
@@ -21,4 +23,5 @@ export const emailConstants: IEmailConstants<typeof EmailEnum> = {
         template: "recovery",
     },
 };
+
 export type { IEmailConstants, IEmailData };

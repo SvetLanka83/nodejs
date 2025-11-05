@@ -32,6 +32,7 @@ router.patch(
     "/:id/unblock",
     authMiddleware.checkAccessToken,
     authMiddleware.isAdmin,
-    userController.unBlockUser,
+    userController.unBblockUser,
 );
+
 export const userRouter = router;

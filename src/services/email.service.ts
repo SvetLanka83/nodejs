@@ -9,6 +9,7 @@ import { IEmailData } from "../constants/email.constants";
 
 class EmailService {
     private transporter: Transporter;
+
     constructor() {
         this.transporter = nodemailer.createTransport({
             service: "gmail",
@@ -18,7 +19,7 @@ class EmailService {
             },
         });
     }
-    private async renderTemplate(
+    private async _renderTemplate(
         templateName: string,
         context: Record<string, any>,
     ): Promise<string> {
@@ -27,6 +28,7 @@ class EmailService {
             "utf8",
         );
         const layoutTemplate = handlebars.compile(layoutSource);
+
         const templateSource = await fs.readFile(
             path.join(process.cwd(), "src", "templates", `${templateName}.hbs`),
             "utf8",
@@ -43,8 +45,9 @@ class EmailService {
         await this.transporter.sendMail({
             to,
             subject: emailData.subject,
-            html: await this.renderTemplate(emailData.template, context),
+            html: await this._renderTemplate(emailData.template, context),
         });
     }
 }
+
 export const emailService = new EmailService();

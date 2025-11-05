@@ -21,6 +21,7 @@ class UserService {
 
         return user;
     }
+
     public async updateById(
         userId: string,
         user: Partial<IUser>,
@@ -33,6 +34,7 @@ class UserService {
 
         return await userRepository.updateById(userId, user);
     }
+
     public async deleteById(userId: string): Promise<void> {
         const data = await userRepository.getById(userId);
 
@@ -53,14 +55,17 @@ class UserService {
             );
         }
     }
+
     public async isActive(id: string): Promise<boolean> {
         const user = await this.getById(id);
         return user.isActive;
     }
-    public bllockUser(user_id: string): Promise<IUser> {
+
+    public blockUser(user_id: string): Promise<IUser> {
         return userRepository.blockUser(user_id);
     }
-    public unBllockUser(user_id: string): Promise<IUser> {
+
+    public unBlockUser(user_id: string): Promise<IUser> {
         return userRepository.unBlockUser(user_id);
     }
     public getByEmail(email: string): Promise<IUser> {
