@@ -16,6 +16,7 @@ const userSchema = new Schema(
         name: { type: String, required: true },
         surname: { type: String, required: true },
         age: { type: Number, required: true },
+        avatar: { type: String, default: "" },
         isActive: { type: Boolean, default: false },
         isDeleted: { type: Boolean, default: false },
         isVerified: { type: Boolean, default: false },
