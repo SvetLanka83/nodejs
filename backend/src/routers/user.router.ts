@@ -35,10 +35,13 @@ router.patch(
     authMiddleware.isAdmin,
     userController.unBblockUser,
 );
+
 router.patch(
     "/upload-avatar/:id",
-    commonMiddleware.isIdValidate("id"),
+    authMiddleware.checkAccessToken,
     upload.single("avatar"),
+    commonMiddleware.isFileExists(),
     userController.uploadAvatar,
 );
+
 export const userRouter = router;
